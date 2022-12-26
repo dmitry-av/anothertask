@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% load draw_menu %}
+{% block content %}
+{% draw_menu 'first' %}
+<h1>{{ request.resolver_match.view_name }} page</h1>
+{% endblock %}
