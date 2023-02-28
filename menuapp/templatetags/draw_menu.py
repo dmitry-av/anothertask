@@ -1,5 +1,6 @@
 from django import template
 from menuapp.models import Menu
+from django.db.models import Prefetch
 
 register = template.Library()
 
@@ -8,7 +9,7 @@ register = template.Library()
 def draw_menu(context, slug):
     try:
         menu = Menu.objects.prefetch_related(
-            'items__items__items__items').get(slug=slug)
+            Prefetch('items__items')).get(slug=slug)
         return {'menu': menu, 'context': context}
     except Menu.DoesNotExist:
         return {'menu': '', 'context': context}
