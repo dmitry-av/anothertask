@@ -1,29 +1,28 @@
 {% load draw_dropdown %}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <a class="navbar-brand" href="{{ menu.get_path }}">{{ menu.title }}
-                {{ menu.get_url }}</a>
-            <ul class="nav navbar-nav">
-            {% with items=menu.items.all %}
-                {% for item in items %}
-                    {% if item.items.all %}
-                        <li class="nav-item dropdown">
-                            <a href="{{ item.get_url }}" class="nav-link dropdown-toggle"
-                               id="dropdownmenulink"
-                               data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                               {{ item.title }}
-                            </a>
-                            {% draw_dropdown item %}
-                        </li>
-                    {% else %}
-                        <li class="nav-item nav-link">
-                            <a href="{{ item.get_url }}">{{ item.title }}</a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            {% endwith %}
-            </ul>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{ menu.get_path }}">{{ menu.title }} {{ menu.get_url }}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"  aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="main_nav">
+      <ul class="navbar-nav">
+      {% with items=menu.items.all %} 
+        {% for item in items %}
+          {% if item.items.all %}
+            <li class="nav-item dropdown {% is_nav_active request %}" id="myDropdown">
+                <a class="nav-link dropdown-toggle" href="{{ item.get_url }}" data-bs-toggle="dropdown">{{ item.title }}</a>
+                <ul class="dropdown-menu">
+                {% draw_dropdown item %}
+                </ul>
+            </li>
+          {% else %}
+            <li class="nav-item {% is_nav_active request %}"> <a class="nav-link" href="{{ item.get_url }}">{{ item.title }}</a> </li>
+          {% endif %}
+        {% endfor %}
+      {% endwith %}
+      </ul>
     </div>
+  </div>
 </nav>
